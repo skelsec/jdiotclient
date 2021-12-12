@@ -40,7 +40,7 @@ setup(
 	python_requires='>=3.7',
 	install_requires=[
 		'websockets',
-		'protobuf>=3.19.1'
+		'protobuf==3.19.1'
 	],
 	
 	classifiers=[
