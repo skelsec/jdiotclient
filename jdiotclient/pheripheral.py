@@ -7,7 +7,7 @@ from typing import List, Dict, Awaitable, cast
 from jdiotclient import logger
 from jdiotclient.protocol.python.jdiotprotocol_pb2 import *
 
-class JDIoTPheripheralBase:
+class JDIoTPeripheralBase:
 	def __init__(self, ptype: PeripheralType, description:str = "", maintype:str = "", subtype:str = ""):
 		self.maintype = maintype
 		self.subtype = subtype
@@ -130,9 +130,9 @@ class JDIoTPheripheralBase:
 		except Exception as e:
 			traceback.print_exc()
 
-class JDIoTStatefulPheripheral(JDIoTPheripheralBase):
+class JDIoTStatefulPeripheral(JDIoTPeripheralBase):
 	def __init__(self, ptype:PeripheralType, cmdtype:PStateType, minValue:int = None, maxValue:int = None, stepsValue = None, description:str = "", maintype:str = "", subtype:str = ""):
-		JDIoTPheripheralBase.__init__(self, ptype, description = description, maintype = maintype, subtype = subtype)
+		JDIoTPeripheralBase.__init__(self, ptype, description = description, maintype = maintype, subtype = subtype)
 		self.cmdtype = cmdtype
 		self.minValue = minValue
 		self.maxValue = maxValue
@@ -224,9 +224,9 @@ class JDIoTStatefulPheripheral(JDIoTPheripheralBase):
 		return res
 
 
-class JDIoTCameraPheripheral(JDIoTPheripheralBase):
+class JDIoTCameraPeripheral(JDIoTPeripheralBase):
 	def __init__(self, vtype:VideoType, width:int, height:int, bpp:int, description:str = "", maintype:str = "", subtype:str = ""):
-		JDIoTPheripheralBase.__init__(self, PeripheralType.CAMERA, description = description, maintype = maintype, subtype = subtype)
+		JDIoTPeripheralBase.__init__(self, PeripheralType.CAMERA, description = description, maintype = maintype, subtype = subtype)
 		self.vtype = vtype
 		self.width = width
 		self.height = height
@@ -246,8 +246,6 @@ class JDIoTCameraPheripheral(JDIoTPheripheralBase):
 	
 	def get_descriptor(self) -> Peripheral :
 		res = Peripheral()
-		res.mainModelType = self.mainModelType
-		res.subModelType = self.subModelType
 		res.type = self.ptype
 		res.interactive = len(self.command_list()) > 0
 		res.peripheralToken = self.registrationToken

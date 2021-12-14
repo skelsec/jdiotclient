@@ -4,12 +4,12 @@ import logging
 
 from jdiotclient import logger
 from jdiotclient.client import JDIoTClient
-from jdiotclient.pheripheral import JDIoTStatefulPheripheral
+from jdiotclient.pheripheral import JDIoTStatefulPeripheral
 from jdiotclient.protocol.python.jdiotprotocol_pb2 import *
 
-class VirtualOutputPeripheral(JDIoTStatefulPheripheral):
+class VirtualOutputPeripheral(JDIoTStatefulPeripheral):
 	def __init__(self, description = "", maintype = "SIMPLE-SWITCH"):
-		JDIoTStatefulPheripheral.__init__(self, PeripheralType.SWITCH, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
+		JDIoTStatefulPeripheral.__init__(self, PeripheralType.SWITCH, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
 		self.lastvalue = False
 
 	async def setup(self):
@@ -25,9 +25,9 @@ class VirtualOutputPeripheral(JDIoTStatefulPheripheral):
 	async def do_refresh(self, value):
 		await self.send_bool(self.lastvalue)
 
-class VirtualInputPeripheral(JDIoTStatefulPheripheral):
+class VirtualInputPeripheral(JDIoTStatefulPeripheral):
 	def __init__(self, description = "", maintype = "SIMPLE-BULB"):
-		JDIoTStatefulPheripheral.__init__(self, PeripheralType.PIN, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
+		JDIoTStatefulPeripheral.__init__(self, PeripheralType.PIN, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
 		self.lastvalue = False
 		self.switch_time = 3
 	

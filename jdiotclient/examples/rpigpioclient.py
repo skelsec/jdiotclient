@@ -4,16 +4,16 @@ import logging
 
 from jdiotclient import logger
 from jdiotclient.client import JDIoTClient
-from jdiotclient.pheripheral import JDIoTStatefulPheripheral
+from jdiotclient.pheripheral import JDIoTStatefulPeripheral
 from jdiotclient.protocol.python.jdiotprotocol_pb2 import *
 
 import RPi.GPIO as GPIO
 
 #GPIO.BCM
 #= GPIO.BOARD
-class RPIGPIOOutputPeripheral(JDIoTStatefulPheripheral):
+class RPIGPIOOutputPeripheral(JDIoTStatefulPeripheral):
 	def __init__(self, gpioport, gpiopinlayout, pull_up_down, description = "", maintype = "SIMPLE-SWITCH"):
-		JDIoTStatefulPheripheral.__init__(self, PeripheralType.SWITCH, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
+		JDIoTStatefulPeripheral.__init__(self, PeripheralType.SWITCH, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
 		self.gpiopinlayout = gpiopinlayout
 		self.gpioport = gpioport
 		self.lastvalue = False
@@ -35,9 +35,9 @@ class RPIGPIOOutputPeripheral(JDIoTStatefulPheripheral):
 	async def do_refresh(self, value):
 		await self.send_bool(self.lastvalue)
 
-class RPIGPIOInputPeripheral(JDIoTStatefulPheripheral):
+class RPIGPIOInputPeripheral(JDIoTStatefulPeripheral):
 	def __init__(self, gpioport, gpiopinlayout, pull_up_down, description = "", maintype = "SIMPLE-BULB"):
-		JDIoTStatefulPheripheral.__init__(self, PeripheralType.PIN, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
+		JDIoTStatefulPeripheral.__init__(self, PeripheralType.PIN, PStateType.PSTATE_BOOL, description = description, maintype = maintype)
 		self.gpiopinlayout = gpiopinlayout
 		self.gpioport = gpioport
 		self.bouncetime = 500

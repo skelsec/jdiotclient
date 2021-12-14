@@ -5,14 +5,14 @@ from typing import List, Dict, Awaitable, cast
 
 from jdiotclient import logger
 from jdiotclient._version import __version__
-from jdiotclient.pheripheral import JDIoTPheripheralBase
+from jdiotclient.pheripheral import JDIoTPeripheralBase
 from jdiotclient.protocol.python.jdiotprotocol_pb2 import *
 import websockets
 from websockets.client import WebSocketClientProtocol
 
 
 class JDIoTClient:
-	def __init__(self, url:str, maintype:str, peripherals:List[JDIoTPheripheralBase] = [], description:str = '', ssl_ctx:ssl.SSLContext = None, subtype:str = '', username:str = '', password:str = ''):
+	def __init__(self, url:str, maintype:str, peripherals:List[JDIoTPeripheralBase] = [], description:str = '', ssl_ctx:ssl.SSLContext = None, subtype:str = '', username:str = '', password:str = ''):
 		self.url = url
 		self.username = username
 		self.password = password
@@ -29,7 +29,7 @@ class JDIoTClient:
 		self.registered_evt:asyncio.Event = None
 		self.__pheripherals_out_q:asyncio.Queue = None
 		self.__ws = None
-		self.__current_peritherals:Dict[str, JDIoTPheripheralBase] = {} #token -> Pheripheral
+		self.__current_peritherals:Dict[str, JDIoTPeripheralBase] = {} #token -> Pheripheral
 		self.__current_pheripheral_token = 1
 		self.__is_registered:bool = False
 		self.__main_task:asyncio.Task = None
@@ -92,7 +92,7 @@ class JDIoTClient:
 			traceback.print_exc()
 			return None, e
 	
-	async def add_pheripheral(self, pheripheral: JDIoTPheripheralBase):
+	async def add_pheripheral(self, pheripheral: JDIoTPeripheralBase):
 		try:
 			logger.info('[+] Adding pheripheral...')
 			if self.__is_registered is False:
@@ -166,7 +166,7 @@ class JDIoTClient:
 	
 	async def __main(self):
 		try:
-			async with websockets.connect(self.url) as websocket:
+			async with websockets.connect(self.url, max_size=5*1024*1024) as websocket:
 				logger.info('[+] Connected to server!')
 				self.connected_evt.set()
 				_, err = await self.__register(websocket)
